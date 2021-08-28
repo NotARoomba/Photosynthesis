@@ -52,7 +52,7 @@ namespace photosynthesis {
 			int m_width, m_height;
 			static bool m_keys[MAX_KEYS];
 			static bool m_mouseButtons[MAX_BUTTONS];
-			static double mx, my;
+			double mx, my;
 			//Initialize the window
 			bool init() {
 				if (!glfwInit()) {
@@ -75,10 +75,9 @@ namespace photosynthesis {
 				}
 				return true;
 			}
-			static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-					m_keys[key] = action != GLFW_RELEASE;
+			 static inline void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+				m_keys[key] = action != GLFW_RELEASE;
 			}
-
 		};
 	}
 }
