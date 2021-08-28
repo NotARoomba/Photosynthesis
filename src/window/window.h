@@ -26,6 +26,8 @@ namespace photosynthesis {
 			bool closed() {
 				return glfwWindowShouldClose(m_window);
 			}
+			inline int getWidth() { return m_width; }
+			inline int getHeight() { return m_height; }
 			~Window() {
 				glfwTerminate();
 			}
@@ -45,6 +47,9 @@ namespace photosynthesis {
 					return false;
 				}
 				glfwMakeContextCurrent(m_window);
+				glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
+					glViewport(0, 0, width, height);
+					});
 				return true;
 			}
 		};

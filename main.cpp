@@ -4,7 +4,7 @@ using namespace photosynthesis;
 using namespace graphics;
 
 int main() {
-	Window window("Photosynthesis Engine", 800, 600);
+	Window window("Photosynthesis Engine", 960, 540);
 	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 	while (!window.closed()) {
 		window.clear();
