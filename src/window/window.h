@@ -46,6 +46,10 @@ namespace photosynthesis {
 				if (mouse >= MAX_BUTTONS) return false;
 				return m_mouseButtons[mouse];
 			}
+			void getMousePosition(double& x, double& y) {
+				x = mx;
+				y = my;
+			}
 			bool closed() {
 				return glfwWindowShouldClose(m_window);
 			}
@@ -73,6 +77,7 @@ namespace photosynthesis {
 				glfwSetWindowSizeCallback(m_window, resize_window);
 				glfwSetKeyCallback(m_window, key_callback);
 				glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+				glfwSetCursorPosCallback(m_window, cursor_position_callback);
 				if (glewInit() != GLEW_OK) {
 					std::cout << "Failed to initialize GLEW!" << std::endl;
 					return false;
@@ -81,10 +86,15 @@ namespace photosynthesis {
 			}
 			 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 				m_keys[key] = action != GLFW_RELEASE;
-			}
+			 }
 			 static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 				 m_mouseButtons[button] = action != GLFW_RELEASE;
 			 }
+			 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+				 mx = xpos;
+				 my = ypos;
+			 }
+
 			 static void resize_window(GLFWwindow* window, int width, int height) {
 				 glViewport(0, 0, width, height);
 			 }
