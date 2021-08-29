@@ -6,6 +6,10 @@
 #define MAX_KEYS 1024
 #define MAX_BUTTONS 32
 
+static bool m_keys[MAX_KEYS];
+static bool m_mouseButtons[MAX_BUTTONS];
+static double mx, my;
+
 namespace photosynthesis {
 	namespace graphics {
 		class Window {
@@ -38,6 +42,10 @@ namespace photosynthesis {
 				if (keycode >= MAX_KEYS) return false;
 				return m_keys[keycode];
 			}
+			bool isMouseButtonPressed(unsigned int mouse) {
+				if (mouse >= MAX_BUTTONS) return false;
+				return m_mouseButtons[mouse];
+			}
 			bool closed() {
 				return glfwWindowShouldClose(m_window);
 			}
@@ -50,9 +58,6 @@ namespace photosynthesis {
 			GLFWwindow* m_window;
 			const char* m_title;
 			int m_width, m_height;
-			static bool m_keys[MAX_KEYS];
-			static bool m_mouseButtons[MAX_BUTTONS];
-			double mx, my;
 			//Initialize the window
 			bool init() {
 				if (!glfwInit()) {
@@ -65,19 +70,24 @@ namespace photosynthesis {
 					return false;
 				}
 				glfwMakeContextCurrent(m_window);
-				glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
-					glViewport(0, 0, width, height);
-					});
+				glfwSetWindowSizeCallback(m_window, resize_window);
 				glfwSetKeyCallback(m_window, key_callback);
+				glfwSetMouseButtonCallback(m_window, mouse_button_callback);
 				if (glewInit() != GLEW_OK) {
 					std::cout << "Failed to initialize GLEW!" << std::endl;
 					return false;
 				}
 				return true;
 			}
-			 static inline void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+			 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 				m_keys[key] = action != GLFW_RELEASE;
 			}
+			 static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+				 m_mouseButtons[button] = action != GLFW_RELEASE;
+			 }
+			 static void resize_window(GLFWwindow* window, int width, int height) {
+				 glViewport(0, 0, width, height);
+			 }
 		};
 	}
 }
