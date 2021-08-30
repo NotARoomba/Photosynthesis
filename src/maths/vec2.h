@@ -33,7 +33,37 @@ namespace photosynthesis {
 				y /= other.y;
 				return *this;
 			}
-			friend std::iostream& operator<<(std::iostream& stream, const vec2& vector) {
+			friend vec2& operator+(vec2 left, const vec2& right) {
+				return left.add(right);
+			}
+			friend vec2& operator-(vec2 left, const vec2& right) {
+				return left.subtract(right);
+			}
+			friend vec2& operator*(vec2 left, const vec2& right) {
+				return left.multiply(right);
+			}
+			friend vec2& operator/(vec2 left, const vec2& right) {
+				return left.divide(right);
+			}
+			vec2& operator+=(const vec2& other) {
+				return add(other);
+			}
+			vec2& operator-=(const vec2& other) {
+				return subtract(other);
+			}
+			vec2& operator*=(const vec2& other) {
+				return multiply(other);
+			}
+			vec2& operator/=(const vec2& other) {
+				return divide(other);
+			}
+			bool operator==(const vec2& other) {
+				return x == other.x && y == other.y;
+			}
+			bool operator!=(const vec2& other) {
+				return !(*this == other);
+			}
+			friend std::ostream& operator<<(std::ostream& stream, const vec2& vector) {
 				stream << "vec2: (" << vector.x << ", " << vector.y << ")";
 				return stream;
 			}
