@@ -35,8 +35,18 @@
     <ClInclude Include="src\maths\maths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\maths\mat4.h">
+    <ClInclude Include="src\utils\fileUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\window\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shaders\texture.vert" />
+    <None Include="src\shaders\texture.frag" />
   </ItemGroup>
 </Project>
