@@ -9,9 +9,7 @@ namespace photosynthesis {
 		class Shader {
 		public:
 			Shader(const char* vertPath, const char* fragPath) : m_vertPath(vertPath), m_fragPath(fragPath) {
-				const char* vertSrc = read_file(vertPath);
-				const char* fragSrc = read_file(fragPath);
-				m_ShaderID = load(vertSrc, fragSrc);
+				m_ShaderID = load(read_file(vertPath), read_file(fragPath));
 			}
 			void enable() {
 				glUseProgram(m_ShaderID);
@@ -35,11 +33,17 @@ namespace photosynthesis {
 			{
 				glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 			}
+			void setVec3(const std::string& name, glm::vec3 value) const
+			{
+				glUniform3fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, glm::value_ptr(value));
+			}
 		private:
-			GLuint m_ShaderID;
+			int m_ShaderID;
 			const char* m_vertPath;
 			const char* m_fragPath;
-			GLuint load(const char* vertSrc, const char* fragSrc) {
+			int load(std::string vertCode, std::string fragCode) {
+				const char* vertSrc = vertCode.c_str();
+				const char* fragSrc = fragCode.c_str();
 				unsigned int vertex, fragment;
 				int success;
 				char infoLog[512];
@@ -47,7 +51,7 @@ namespace photosynthesis {
 				vertex = glCreateShader(GL_VERTEX_SHADER);
 				glShaderSource(vertex, 1, &vertSrc, NULL);
 				glCompileShader(vertex);
-				// print compile errors if any
+				
 				glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
 				if (!success)
 				{
@@ -58,7 +62,7 @@ namespace photosynthesis {
 				fragment = glCreateShader(GL_FRAGMENT_SHADER);
 				glShaderSource(fragment, 1, &fragSrc, NULL);
 				glCompileShader(fragment);
-				// print compile errors if any
+				
 				glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
 				if (!success)
 				{
@@ -66,11 +70,11 @@ namespace photosynthesis {
 					std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 				};
 				// shader Program
-				GLuint ID = glCreateProgram();
+				int ID = glCreateProgram();
 				glAttachShader(ID, vertex);
 				glAttachShader(ID, fragment);
 				glLinkProgram(ID);
-				// print linking errors if any
+				
 				glGetProgramiv(ID, GL_LINK_STATUS, &success);
 				if (!success)
 				{
@@ -78,7 +82,6 @@ namespace photosynthesis {
 					std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 				}
 
-				// delete the shaders as they're linked into our program now and no longer necessary
 				glDeleteShader(vertex);
 				glDeleteShader(fragment);
 
