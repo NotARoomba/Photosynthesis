@@ -37,6 +37,10 @@ namespace photosynthesis {
 			{
 				glUniform3fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, glm::value_ptr(value));
 			}
+			void setVec2(const std::string& name, glm::vec2 value) const
+			{
+				glUniform2fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, glm::value_ptr(value));
+			}
 		private:
 			int m_ShaderID;
 			const char* m_vertPath;

@@ -4,16 +4,17 @@
 #include "src/utils/drawUtils.h"
 #include <iostream>
 
+
 using namespace photosynthesis;
 using namespace graphics;
+using namespace items;
 
 int main() {
 	Window window("Photosynthesis Engine", 960, 540);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-	srand(NULL);
-	// call addTriangle and add triangles with random positions between -5 and 5
-	for (int i = 0; i < 100; i++) {
-		addTriangle(
+	srand(time(NULL));
+	for (int i = 0; i < 1; i++) {
+		addItem(new Triangle(
 			glm::vec3(
 				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
 				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
@@ -33,6 +34,23 @@ int main() {
 				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
 				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
 				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
+			)/*,
+			loadTexture("src/assets/container.jpg")*/
+			)
+		);
+		//add a cube
+		addItem(new Cube(
+			glm::vec3(
+				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
+			),
+			glm::vec3(
+				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
+			),
+			loadTexture("src/assets/container.jpg")
 			)
 		);
 	}

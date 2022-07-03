@@ -1,12 +1,14 @@
 #pragma once
-#include <iostream>
+#define MAX_KEYS 1024
+#define MAX_BUTTONS 32
 
 #include "camera.h"
 #include "../shaders/shader.h"
+#include "../utils/fileUtils.h"
+
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
-#define MAX_KEYS 1024
-#define MAX_BUTTONS 32
+#include <iostream>
 
 static bool m_keys[MAX_KEYS];
 static bool m_mouseButtons[MAX_BUTTONS];
@@ -110,6 +112,7 @@ namespace photosynthesis {
 					std::cout << "Failed to initialize GLAD!" << std::endl;
 					return false;
 				}
+				stbi_set_flip_vertically_on_load(true);
 				glViewport(0, 0, m_width, m_height);
 				glEnable(GL_DEPTH_TEST);
 				m_camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
