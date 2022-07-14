@@ -6,6 +6,7 @@
 #include "../shaders/shader.h"
 #include "../utils/fileUtils.h"
 
+
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -64,14 +65,6 @@ namespace photosynthesis {
 				m_shader->setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
 				m_shader->setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
 				m_shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-				// point light 1
-				m_shader->setVec3("pointLights[0].position", 1.0f, 1.0f, 1.0f);
-				m_shader->setVec3("pointLights[0].ambient", 0.0f, 0.0f, 1.0f * 0.1f);
-				m_shader->setVec3("pointLights[0].diffuse", 0.0f, 0.0f, 1.0f);
-				m_shader->setVec3("pointLights[0].specular", 0.0f, 0.0f, 1.0f);
-				m_shader->setFloat("pointLights[0].constant", 1.0f);
-				m_shader->setFloat("pointLights[0].linear", 0.09f);
-				m_shader->setFloat("pointLights[0].quadratic", 0.032f);
 				// spotLight
 				m_shader->setVec3("spotLight.position", m_camera.Position);
 				m_shader->setVec3("spotLight.direction", m_camera.Front);

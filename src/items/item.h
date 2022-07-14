@@ -15,7 +15,20 @@ namespace photosynthesis {
 			unsigned int VAO, VBO;
 			unsigned int texture;
 			unsigned int specular;
-			virtual void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view) {};
+			virtual void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view, std::vector<Item*> *lights) {};
+			virtual glm::vec3 getPosition() {return glm::vec3(0, 0, 0);};
+			void lights(graphics::Window* window, std::vector<Item*>* lights) {
+				for (int i = 0; i < lights->size(); i++) {
+					std::string n = std::to_string(i);
+					window->m_shader->setVec3("pointLights[" + n + "].position", lights->at(i)->getPosition());
+					window->m_shader->setVec3("pointLights[" + n + "].ambient", lights->at(i)->color.x * 0.1f, lights->at(i)->color.y * 0.1f, lights->at(i)->color.z * 0.1f);
+					window->m_shader->setVec3("pointLights[" + n + "].diffuse", lights->at(i)->color);
+					window->m_shader->setVec3("pointLights[" + n + "].specular", lights->at(i)->color);
+					window->m_shader->setFloat("pointLights[" + n + "].constant", 1.0f);
+					window->m_shader->setFloat("pointLights[" + n + "].linear", 0.09);
+					window->m_shader->setFloat("pointLights[" + n + "].quadratic", 0.032);
+				}
+			}
 			void init(std::vector<float> arr, unsigned int* VBO, unsigned int* VAO) {
 				glGenVertexArrays(1, VAO);
 				glGenBuffers(1, VBO);

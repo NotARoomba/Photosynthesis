@@ -32,7 +32,7 @@ namespace photosynthesis {
 					z.x, z.y, z.z, color.x, color.y, color.z, 0.0f, 1.0f
 				};
 			}
-			void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view) override {
+			void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view, std::vector<Item*> *lights) override {
 				window->m_shader->enable();
 				glm::mat4 model = glm::mat4(1.0f);
 				window->m_shader->setVec3("color", this->color);
@@ -40,6 +40,7 @@ namespace photosynthesis {
 				window->m_shader->setMat4("projection", projection);
 				window->m_shader->setMat4("model", model);
 				window->m_shader->setBool("textureOn", this->textureOn);
+				this->lights(window, lights);
 				window->lighting();
 				if (this->textureOn) {
 					glActiveTexture(GL_TEXTURE0);
