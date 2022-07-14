@@ -162,6 +162,7 @@
     <ClInclude Include="external\include\stb_image.h" />
     <ClInclude Include="src\items\cube.h" />
     <ClInclude Include="src\items\item.h" />
+    <ClInclude Include="src\items\lightCube.h" />
     <ClInclude Include="src\items\triangle.h" />
     <ClInclude Include="src\shaders\shader.h" />
     <ClInclude Include="src\utils\drawUtils.h" />
@@ -172,10 +173,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\fragment.frag" />
+    <None Include="src\shaders\light.frag" />
+    <None Include="src\shaders\light.vert" />
     <None Include="src\shaders\vertex.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\assets\container.jpg" />
+    <Image Include="src\assets\container2.png" />
+    <Image Include="src\assets\container2_specular.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

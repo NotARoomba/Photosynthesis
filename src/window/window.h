@@ -25,6 +25,7 @@ namespace photosynthesis {
 			float deltaTime = 0.0f;
 			float lastFrame = 0.0f;
 			Shader* m_shader;
+			Shader* m_lightShader;
 			Window(const char* title, int width, int height) {
 				//Stores title, width and height of window
 				m_title = title;
@@ -42,6 +43,7 @@ namespace photosynthesis {
 				m_lastX = m_width / 2.0f;
 				m_lastY = m_height / 2.0f;
 				m_shader = new Shader("src/shaders/vertex.vert", "src/shaders/fragment.frag");
+				m_lightShader = new Shader("src/shaders/light.vert", "src/shaders/light.frag");
 			}
 			void clear() {
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -53,6 +55,34 @@ namespace photosynthesis {
 				glfwPollEvents();
 				glfwGetFramebufferSize(m_window, &m_width, &m_height);
 				glfwSwapBuffers(m_window);
+			}
+			void lighting() {
+				m_shader->setVec3("viewPos", m_camera.Position);
+				m_shader->setFloat("material.shininess", 32.0f);
+				// directional light
+				m_shader->setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+				m_shader->setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+				m_shader->setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+				m_shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+				// point light 1
+				m_shader->setVec3("pointLights[0].position", 1.0f, 1.0f, 1.0f);
+				m_shader->setVec3("pointLights[0].ambient", 0.0f, 0.0f, 1.0f * 0.1f);
+				m_shader->setVec3("pointLights[0].diffuse", 0.0f, 0.0f, 1.0f);
+				m_shader->setVec3("pointLights[0].specular", 0.0f, 0.0f, 1.0f);
+				m_shader->setFloat("pointLights[0].constant", 1.0f);
+				m_shader->setFloat("pointLights[0].linear", 0.09f);
+				m_shader->setFloat("pointLights[0].quadratic", 0.032f);
+				// spotLight
+				m_shader->setVec3("spotLight.position", m_camera.Position);
+				m_shader->setVec3("spotLight.direction", m_camera.Front);
+				m_shader->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+				m_shader->setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+				m_shader->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+				m_shader->setFloat("spotLight.constant", 1.0f);
+				m_shader->setFloat("spotLight.linear", 0.09f);
+				m_shader->setFloat("spotLight.quadratic", 0.032f);
+				m_shader->setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+				m_shader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 			}
 			void useShader() {
 				m_shader->enable();

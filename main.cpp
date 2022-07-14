@@ -14,45 +14,44 @@ int main() {
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	srand(time(NULL));
 	for (int i = 0; i < 1; i++) {
-		addItem(new Triangle(
-			glm::vec3(
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
-			),
-			glm::vec3(
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
-			),
-			glm::vec3(
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
-			),
-			glm::vec3(
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
-			)/*,
-			loadTexture("src/assets/container.jpg")*/
-			)
-		);
+		//addItem(new Triangle(
+		//	glm::vec3(
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
+		//	),
+		//	glm::vec3(
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
+		//	),
+		//	glm::vec3(
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
+		//	),
+		//	glm::vec3(
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
+		//		(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
+		//	)/*,
+		//	loadTexture("src/assets/container.jpg")*/
+		//	)
+		//);
 		//add a cube
 		addItem(new Cube(
-			glm::vec3(
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
-			),
-			glm::vec3(
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f,
-				(float)rand() / (float)RAND_MAX * 10.0f - 5.0f
-			),
-			loadTexture("src/assets/container.jpg")
+			glm::vec3(-1.0f, 0.0f, 0.0f),
+			loadTexture("src/assets/container2.png"),
+			loadTexture("src/assets/container2_specular.png")
 			)
 		);
+		addItem(new LightCube(
+			glm::vec3(1.0f, 1.0f, 1.0f), //position
+			glm::vec3(0.0f, 0.0f, 1.0f)
+			)
+		);
+		
+		
 	}
 	while (!window.closed()) {
 		window.update();
