@@ -10,6 +10,7 @@ namespace photosynthesis {
 				this->color = color;
 				this->textureOn = false;
 				this->specularOn = false;
+				this->model = glm::mat4(1.0f);
 				init(getArray(), &this->VBO, &this->VAO);
 			}
 			Cube(glm::vec3 position, unsigned int texture) {
@@ -17,6 +18,7 @@ namespace photosynthesis {
 				this->texture = texture;
 				this->textureOn = true;
 				this->specularOn = false;
+				this->model = glm::mat4(1.0f);
 				init(getArray(), &this->VBO, &this->VAO);
 			}
 			Cube(glm::vec3 position, unsigned int texture, unsigned int specular) {
@@ -25,6 +27,7 @@ namespace photosynthesis {
 				this->textureOn = true;
 				this->specular = specular;
 				this->specularOn = true;
+				this->model = glm::mat4(1.0f);
 				init(getArray(), &this->VBO, &this->VAO);
 			}
 			std::vector<float> getArray() {
@@ -117,23 +120,30 @@ namespace photosynthesis {
 				};
 			}
 			void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view, std::vector<Item*> *lights) override {
-				glm::mat4 model = glm::mat4(1.0f);
 				window->m_shader->enable();
-				model = glm::translate(model, position);
+				this->model = glm::translate(this->model, position);
 				window->m_shader->setVec3("color", this->color);
 				window->m_shader->setMat4("view", view);
 				window->m_shader->setMat4("projection", projection);
-				window->m_shader->setMat4("model", model);
+				window->m_shader->setMat4("model", this->model);
 				window->m_shader->setBool("textureOn", this->textureOn);
+				this->model = glm::mat4(1.0f);
 				this->lights(window, lights);
 				window->lighting();
 				if (this->textureOn) {
 					glActiveTexture(GL_TEXTURE0);
 					glBindTexture(GL_TEXTURE_2D, this->texture);
 				}
+				else {
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, 0);
+				}
 				if (this->specularOn) {
 					glActiveTexture(GL_TEXTURE1);
 					glBindTexture(GL_TEXTURE_2D, this->specular);
+				} else {
+					glActiveTexture(GL_TEXTURE1);
+					glBindTexture(GL_TEXTURE_2D, 0);
 				}
 				window->m_shader->enable();
 				glBindVertexArray(this->VAO);

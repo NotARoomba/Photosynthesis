@@ -49,16 +49,28 @@ int main() {
 		);
 		addItem(new LightCube(
 			glm::vec3(1.0f, 1.0f, 1.0f), //position
-			glm::vec3(0.0f, 0.0f, 1.0f)
+			glm::vec3(0.0f, 1.0f, 1.0f)
 			), 1
 		);
+		//add a large flat plane
 		
 		
 	}
+	Cube *plane = new Cube(
+		glm::vec3(-1.0f, 0.0f, 1.0f),
+		loadTexture("src/assets/floor.jpg")
+	);
+	addItem(plane);
 	while (!window.closed()) {
 		window.update();
 		window.clear();
 		window.useShader();
+		//make a large flat area 
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 2.0f));
+		model = glm::scale(model, glm::vec3(5.0f, 0.1f, 5.0f));
+		plane->model = model;
+
 		draw(&window);
 
 		if (window.isKeyPressed(GLFW_KEY_ESCAPE))

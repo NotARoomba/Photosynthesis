@@ -10,6 +10,7 @@ namespace photosynthesis {
 		class Item {
 		public:
 			glm::vec3 color;
+			glm::mat4 model;
 			bool textureOn;
 			bool specularOn;
 			unsigned int VAO, VBO;
@@ -17,6 +18,9 @@ namespace photosynthesis {
 			unsigned int specular;
 			virtual void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view, std::vector<Item*> *lights) {};
 			virtual glm::vec3 getPosition() {return glm::vec3(0, 0, 0);};
+			virtual void setPosition(glm::vec3 pos) {};
+			virtual glm::mat4 getModel() {return model;};
+			virtual void setModel(glm::mat4 model) {this->model = model;};
 			void lights(graphics::Window* window, std::vector<Item*>* lights) {
 				for (int i = 0; i < lights->size(); i++) {
 					std::string n = std::to_string(i);
