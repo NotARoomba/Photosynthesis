@@ -52,13 +52,28 @@ int main() {
 			glm::vec3(0.0f, 1.0f, 1.0f)
 			), 1
 		);
-		//add a large flat plane
+		//add mroe lights in random positions
+		for (int i = 0; i < 50; i++) {
+			addItem(new LightCube(
+				glm::vec3(
+					(float)rand() / (float)RAND_MAX * 100.0f - 50.0f,
+					(float)rand() / (float)RAND_MAX * 1.0f,
+					(float)rand() / (float)RAND_MAX * 100.0f - 50.0f
+				),
+				glm::vec3(
+					(float)rand() / (float)RAND_MAX,
+					(float)rand() / (float)RAND_MAX,
+					(float)rand() / (float)RAND_MAX
+				)
+				), 1
+			);
+		}
 		
 		
 	}
 	Cube *plane = new Cube(
-		glm::vec3(-1.0f, 0.0f, 1.0f),
-		loadTexture("src/assets/floor.jpg")
+		glm::vec3(0.0f, -0.5f, 0.0f),
+		loadTexture("src/assets/floor.png")
 	);
 	addItem(plane);
 	while (!window.closed()) {
@@ -67,8 +82,8 @@ int main() {
 		window.useShader();
 		//make a large flat area 
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 2.0f));
-		model = glm::scale(model, glm::vec3(5.0f, 0.1f, 5.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
+		model = glm::scale(model, glm::vec3(500.0f, 0.01f, 500.0f));
 		plane->model = model;
 
 		draw(&window);

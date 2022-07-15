@@ -119,6 +119,9 @@ namespace photosynthesis {
 					-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 				};
 			}
+			glm::vec3 getPosition() {
+				return position;
+			}
 			void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view, std::vector<Item*> *lights) override {
 				window->m_shader->enable();
 				this->model = glm::translate(this->model, position);

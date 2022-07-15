@@ -20,6 +20,9 @@ namespace photosynthesis {
 				this->model = glm::mat4(1.0f);
 				init(getArray(), &this->VBO, &this->VAO);
 			}
+			glm::vec3 getPosition() {
+				return position;
+			}
 			std::vector<float> getArray() {
 				return !this->textureOn ? std::vector<float>{
 					-0.5f, -0.5f, -0.5f, color.r, color.g, color.b, 0.0f, 0.0f,
@@ -111,7 +114,7 @@ namespace photosynthesis {
 			}
 			void draw(graphics::Window* window, glm::mat4 projection, glm::mat4 view, std::vector<Item*>* lights) override {
 				window->m_lightShader->enable();
-				this->model = glm::scale(this->model, glm::vec3(0.5f, 0.5f, 0.5f));
+				//this->model = glm::scale(this->model, glm::vec3(0.5f, 0.5f, 0.5f));
 				this->model = glm::translate(this->model, position);
 				window->m_lightShader->setVec3("color", this->color);
 				window->m_lightShader->setMat4("view", view);

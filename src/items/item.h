@@ -23,6 +23,7 @@ namespace photosynthesis {
 			virtual void setModel(glm::mat4 model) {this->model = model;};
 			void lights(graphics::Window* window, std::vector<Item*>* lights) {
 				for (int i = 0; i < lights->size(); i++) {
+					
 					std::string n = std::to_string(i);
 					window->m_shader->setVec3("pointLights[" + n + "].position", lights->at(i)->getPosition());
 					window->m_shader->setVec3("pointLights[" + n + "].ambient", lights->at(i)->color.x * 0.1f, lights->at(i)->color.y * 0.1f, lights->at(i)->color.z * 0.1f);
