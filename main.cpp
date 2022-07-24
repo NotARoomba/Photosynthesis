@@ -47,13 +47,11 @@ int main() {
 			loadTexture("src/assets/container2_specular.png")
 			)
 		);
-		addItem(new LightCube(
-			glm::vec3(1.0f, 1.0f, 1.0f), //position
-			glm::vec3(0.0f, 1.0f, 1.0f)
-			), 1
-		);
+		addItem(new Cube(glm::vec3(2.0f, 1.0f, 2.0f), glm::vec3(1.0f, 0.0f, 1.0f), 200.1f));
+		addItem(new LightCube(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f)), 1);
+		//addItem(new LightCube(glm::vec3(1.0f, 1.0f, 1.0f), loadTexture("src/assets/glowstone.png")), 1);
 		//add mroe lights in random positions
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 10; i++) {
 			addItem(new LightCube(
 				glm::vec3(
 					(float)rand() / (float)RAND_MAX * 100.0f - 50.0f,
@@ -99,6 +97,11 @@ int main() {
 			m_camera.ProcessKeyboard(LEFT, window.deltaTime);
 		if (window.isKeyPressed(GLFW_KEY_D))
 			m_camera.ProcessKeyboard(RIGHT, window.deltaTime);
+		if (window.isKeyPressed(GLFW_KEY_SPACE))
+			m_camera.ProcessKeyboard(UP, window.deltaTime);
+		if (window.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+			m_camera.ProcessKeyboard(DOWN, window.deltaTime);
+
 	}
 	return 0;
 }

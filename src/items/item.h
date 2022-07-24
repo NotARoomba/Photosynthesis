@@ -10,6 +10,7 @@ namespace photosynthesis {
 		class Item {
 		public:
 			glm::vec3 color;
+			float shininess;
 			glm::mat4 model;
 			bool textureOn;
 			bool specularOn;
@@ -26,9 +27,17 @@ namespace photosynthesis {
 					
 					std::string n = std::to_string(i);
 					window->m_shader->setVec3("pointLights[" + n + "].position", lights->at(i)->getPosition());
-					window->m_shader->setVec3("pointLights[" + n + "].ambient", lights->at(i)->color.x * 0.1f, lights->at(i)->color.y * 0.1f, lights->at(i)->color.z * 0.1f);
-					window->m_shader->setVec3("pointLights[" + n + "].diffuse", lights->at(i)->color);
-					window->m_shader->setVec3("pointLights[" + n + "].specular", lights->at(i)->color);
+					if (lights->at(i)->textureOn) {
+						//TODO get color from texture
+						//window->m_shader->setVec3("pointLights[" + n + "].ambient", lights->at(i)->color.x * 0.1f, lights->at(i)->color.y * 0.1f, lights->at(i)->color.z * 0.1f);
+						//window->m_shader->setVec3("pointLights[" + n + "].diffuse", lights->at(i)->color);
+						//window->m_shader->setVec3("pointLights[" + n + "].specular", lights->at(i)->color);
+					}
+					else {
+						window->m_shader->setVec3("pointLights[" + n + "].ambient", lights->at(i)->color.x * 0.1f, lights->at(i)->color.y * 0.1f, lights->at(i)->color.z * 0.1f);
+						window->m_shader->setVec3("pointLights[" + n + "].diffuse", lights->at(i)->color);
+						window->m_shader->setVec3("pointLights[" + n + "].specular", lights->at(i)->color);
+					}
 					window->m_shader->setFloat("pointLights[" + n + "].constant", 1.0f);
 					window->m_shader->setFloat("pointLights[" + n + "].linear", 0.09);
 					window->m_shader->setFloat("pointLights[" + n + "].quadratic", 0.032);

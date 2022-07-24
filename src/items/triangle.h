@@ -7,11 +7,12 @@ namespace photosynthesis {
 		class Triangle : public Item
 		{
 		public:
-			Triangle(glm::vec3 x, glm::vec3 y, glm::vec3 z, glm::vec3 color) {
+			Triangle(glm::vec3 x, glm::vec3 y, glm::vec3 z, glm::vec3 color, float shininess) {
 				this->x = x;
 				this->y = y;
 				this->z = z;
 				this->color = color;
+				this->shininess = shininess;
 				this->textureOn = false;
 				this->model = glm::mat4(1.0f);
 				init(getArray(), &this->VBO, &this->VAO);
@@ -51,6 +52,7 @@ namespace photosynthesis {
 				else {
 					glActiveTexture(GL_TEXTURE0);
 					glBindTexture(GL_TEXTURE_2D, 0);
+					window->m_shader->setFloat("material.shininess", shininess);
 				}
 				window->m_shader->enable();
 				glBindVertexArray(this->VAO);

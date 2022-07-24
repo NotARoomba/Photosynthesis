@@ -6,7 +6,7 @@ namespace photosynthesis {
 	namespace items {
 		class LightCube : public Cube {
 		public:
-			LightCube(glm::vec3 position, glm::vec3 color) : Cube(position, color) {
+			LightCube(glm::vec3 position, glm::vec3 color) : Cube(position, color, shininess) {
 				this->position = position;
 				this->color = color;
 				this->textureOn = false;

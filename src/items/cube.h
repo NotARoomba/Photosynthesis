@@ -5,9 +5,10 @@ namespace photosynthesis {
 	namespace items {
 		class Cube : public Item {
 		public:
-			Cube(glm::vec3 position, glm::vec3 color) {
+			Cube(glm::vec3 position, glm::vec3 color, float shininess) {
 				this->position = position;
 				this->color = color;
+				this->shininess = shininess;
 				this->textureOn = false;
 				this->specularOn = false;
 				this->model = glm::mat4(1.0f);
@@ -31,50 +32,7 @@ namespace photosynthesis {
 				init(getArray(), &this->VBO, &this->VAO);
 			}
 			std::vector<float> getArray() {
-				return !this->textureOn ? std::vector<float>{
-			-0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-			 0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			 0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			-0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-
-			-0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			-0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-
-			-0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			-0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			-0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-
-			 0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			 0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-
-			-0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			 0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			 0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			 0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			-0.5f, -0.5f,  0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-			-0.5f, -0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-
-			-0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f,
-			 0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 1.0f, 1.0f,
-			 0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			 0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 1.0f, 0.0f,
-			-0.5f,  0.5f,  0.5f,  color.r, color.g, color.b, 0.0f, 0.0f,
-			-0.5f,  0.5f, -0.5f,  color.r, color.g, color.b, 0.0f, 1.0f
-				} :
-				std::vector<float>{
+				return std::vector<float>{
 					// positions          // normals           // texture coords
 					-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 					 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
@@ -140,6 +98,7 @@ namespace photosynthesis {
 				else {
 					glActiveTexture(GL_TEXTURE0);
 					glBindTexture(GL_TEXTURE_2D, 0);
+					window->m_shader->setFloat("material.shininess", shininess);
 				}
 				if (this->specularOn) {
 					glActiveTexture(GL_TEXTURE1);
