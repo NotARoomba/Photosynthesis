@@ -9,6 +9,7 @@ public:
 		this->x = x;
 		this->y = y;
 		this->z = z;
+		this->color = color;
 		this->model = mat4(1.0f);
 		init(getArray(), &this->VBO, &this->VAO);
 	}
@@ -23,6 +24,12 @@ public:
 	}
 	void draw(Photosynthesis* app) {
 		app->shader->enable();
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)app->getWidth() / (float)app->getHeight(), 0.1f, 100.0f);
+        glm::mat4 view = camera.GetViewMatrix();
+		app->shader->setVec3("color", this->color);
+		app->shader->setMat4("view", view);
+		app->shader->setMat4("projection", projection);
+		app->shader->setMat4("model", this->model);
 		glBindVertexArray(this->VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
