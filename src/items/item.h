@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <type_traits>
 #include <vector>
@@ -14,8 +15,8 @@ public:
 	unsigned int texture = -1;
 	float scale = 1;
 	unsigned int VAO, VBO;
-	virtual std::vector<vec3> getPosition() {return std::vector<vec3>{x, y, z};};
-	virtual void setPosition(glm::vec3 pos);
+	std::vector<vec3> getPosition();
+	void setPosition(glm::vec3 pos);
 	void setPosition(glm::vec3 x, glm::vec3 y, glm::vec3 z);
 	glm::mat4 getModel();
 	void setModel(glm::mat4 model);

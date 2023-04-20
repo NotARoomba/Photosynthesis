@@ -3,134 +3,125 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "shaders/shader.cpp"
-#include "camera.cpp"
-
-#define STB_IMAGE_IMPLEMENTATION
-#define MAX_KEYS 1024
-#define MAX_BUTTONS 32
-
-static bool keys[MAX_KEYS];
-static bool mouseButtons[MAX_BUTTONS];
-static double mx, my;
-static float m_lastX;
-static float m_lastY;
-static bool m_firstMouse = true;
-static Camera camera;
+#include "shaders/shader.h"
+#include "camera.h"
+#include "photosynthesis.h"
 
 
-class Photosynthesis {
-public:
-	Shader* shader;
-	float deltaTime = 0.0f;
-	float lastFrame = 0.0f;
-	int width,height;
-	Photosynthesis(int sx, int sy) {
-		this->width = sx;
-		this->height = sy;
-		if (init(sx, sy) == -1) return;
-		shader = new Shader("src/shaders/vertex.vert", "src/shaders/fragment.frag");
-	}
-	void update() {
-		float currentFrame = static_cast<float>(glfwGetTime());
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-	    glfwPollEvents();    
-	}
-	bool shouldClose() {return glfwWindowShouldClose(window);};
-	void useShader() {
-		shader->enable();
-	}
-	void swap() {
-	    glfwSwapBuffers(window);
-	}
-	int getWidth() {return width;};
-	int getHeight() { return height;};
-	void clear() {
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-	bool isKeyPressed(unsigned int keycode) {
-		//tdo log system
-		if (keycode >= MAX_KEYS) return false;
-		return keys[keycode];
-	}
-	bool isMouseButtonPressed(unsigned int mouse) {
-		if (mouse >= MAX_BUTTONS) return false;
-		return mouseButtons[mouse];
-	}
-	void getMousePosition(double& x, double& y) {
-		x = mx;
-		y = my;
-	}
-	void close() {
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
-	~Photosynthesis() {
+bool Photosynthesis::keys[MAX_KEYS];
+bool Photosynthesis::mouseButtons[MAX_BUTTONS];
+double Photosynthesis::mx, Photosynthesis::my;
+float Photosynthesis::m_lastX;
+float Photosynthesis::m_lastY;
+bool Photosynthesis::m_firstMouse;
+Camera *Photosynthesis::camera;
+
+Photosynthesis::Photosynthesis(int sx, int sy, std::string name, vec3 color) {
+	this->width = sx;
+	this->height = sy;
+	this->name = name;
+	this->color = color;
+	Photosynthesis::m_firstMouse = true;
+	if (init(sx, sy) == -1) return;
+	shader = new Shader("src/shaders/vertex.vert", "src/shaders/fragment.frag");
+}
+void Photosynthesis::update() {
+	float currentFrame = static_cast<float>(glfwGetTime());
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	glfwPollEvents();    
+}
+bool Photosynthesis::shouldClose() {return glfwWindowShouldClose(window);};
+void Photosynthesis::useShader() {
+	shader->enable();
+}
+void Photosynthesis::swap() {
+	glfwSwapBuffers(window);
+}
+int Photosynthesis::getWidth() {return width;};
+int Photosynthesis::getHeight() { return height;};
+void Photosynthesis::clear() {
+	glClearColor(this->color.x, this->color.y, this->color.z, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+bool Photosynthesis::isKeyPressed(unsigned int keycode) {
+	//tdo log system
+	if (keycode >= MAX_KEYS) return false;
+	return Photosynthesis::keys[keycode];
+}
+bool Photosynthesis::isMouseButtonPressed(unsigned int mouse) {
+	if (mouse >= MAX_BUTTONS) return false;
+	return Photosynthesis::mouseButtons[mouse];
+}
+void Photosynthesis::getMousePosition(double& x, double& y) {
+	x = Photosynthesis::mx;
+	y = Photosynthesis::my;
+}
+void Photosynthesis::setCamera(Camera * cam) {
+	Photosynthesis::camera = cam;
+}
+void Photosynthesis::close() {
+	glfwSetWindowShouldClose(window, GL_TRUE);
+}
+Photosynthesis::~Photosynthesis() {
+	glfwTerminate();
+}
+void Photosynthesis::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+} 
+int Photosynthesis::init(int sx, int sy) {
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	window = glfwCreateWindow(sx, sy, this->name.c_str(), NULL, NULL);
+	if (window == NULL) {
+		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
+		return -1;
 	}
-private:
-	GLFWwindow* window;
+	glfwMakeContextCurrent(window);
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return -1;
+	}	    
+	glViewport(0, 0, sx, sy);
+	glfwSetFramebufferSizeCallback(window, Photosynthesis::framebuffer_size_callback); 
+	glfwSetKeyCallback(window, Photosynthesis::key_callback);
+	glfwSetMouseButtonCallback(window, Photosynthesis::mouse_button_callback);
+	// glfwSetCursorPosCallback(window, mouse_callback);
+	// glfwSetScrollCallback(window, scroll_callback);
+	return 0;
+}
+void Photosynthesis::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	Photosynthesis::keys[key] = action != GLFW_RELEASE;
+}
+void Photosynthesis::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	Photosynthesis::mouseButtons[button] = action != GLFW_RELEASE;
+}
+void Photosynthesis::mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
+	float xpos = static_cast<float>(xposIn);
+	float ypos = static_cast<float>(yposIn);
 
+	Photosynthesis::mx = xpos;
+	Photosynthesis::my = ypos;
 
-	static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-	    glViewport(0, 0, width, height);
-	} 
-	int init(int sx, int sy) {
-		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		window = glfwCreateWindow(sx, sy, "Photosynthesis", NULL, NULL);
-		if (window == NULL) {
-			std::cout << "Failed to create GLFW window" << std::endl;
-			glfwTerminate();
-			return -1;
-		}
-		glfwMakeContextCurrent(window);
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		    std::cout << "Failed to initialize GLAD" << std::endl;
-		    return -1;
-		}	    
-		glViewport(0, 0, sx, sy);
-		camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
-	 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
-		glfwSetKeyCallback(window, key_callback);
-		glfwSetMouseButtonCallback(window, mouse_button_callback);
-		// glfwSetCursorPosCallback(window, mouse_callback);
-		// glfwSetScrollCallback(window, scroll_callback);
-	 	return 0;
+	if (Photosynthesis::m_firstMouse)
+	{
+		Photosynthesis::m_lastX = xpos;
+		Photosynthesis::m_lastY = ypos;
+		Photosynthesis::m_firstMouse = false;
 	}
-	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-		keys[key] = action != GLFW_RELEASE;
-	}
-	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-		mouseButtons[button] = action != GLFW_RELEASE;
-	}
-	static void mouse_callback(GLFWwindow* window, double xposIn, double yposIn) {
-		float xpos = static_cast<float>(xposIn);
-		float ypos = static_cast<float>(yposIn);
-	
-		mx = xpos;
-		my = ypos;
 
-		if (m_firstMouse)
-		{
-			m_lastX = xpos;
-			m_lastY = ypos;
-			m_firstMouse = false;
-		}
+	float xoffset = xpos - Photosynthesis::m_lastX;
+	float yoffset = Photosynthesis::m_lastY - ypos; // reversed since y-coordinates go from bottom to top
 
-		float xoffset = xpos - m_lastX;
-		float yoffset = m_lastY - ypos; // reversed since y-coordinates go from bottom to top
+	Photosynthesis::m_lastX = xpos;
+	Photosynthesis::m_lastY = ypos;
 
-		m_lastX = xpos;
-		m_lastY = ypos;
-
-		camera.ProcessMouseMovement(xoffset, yoffset);
-	}
-	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-		camera.ProcessMouseScroll(static_cast<float>(yoffset));
-	}
-};
+	Photosynthesis::camera->ProcessMouseMovement(xoffset, yoffset);
+}
+void Photosynthesis::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+	Photosynthesis::camera->ProcessMouseScroll(static_cast<float>(yoffset));
+}

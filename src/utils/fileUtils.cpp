@@ -5,11 +5,13 @@
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include "fileUtils.h"
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 using namespace glm;
 
 
-static std::string read_file(const char* filepath) {
+std::string FileUtils::read_file(const char* filepath) {
     std::string code;
     std::ifstream file;
     file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -27,7 +29,7 @@ static std::string read_file(const char* filepath) {
     }
 	return code;
 }
-static unsigned int loadTexture(char const* path)
+unsigned int FileUtils::loadTexture(char const* path)
 {
     unsigned int textureID;
     glGenTextures(1, &textureID);

@@ -1,49 +1,48 @@
-#include "../utils/fileUtils.cpp"
+#include <iostream>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/gtc/type_ptr.hpp>
-class Shader {
-public:
-	Shader(const char* vertPath, const char* fragPath) : m_vertPath(vertPath), m_fragPath(fragPath) {
-		m_ShaderID = load(read_file(vertPath), read_file(fragPath));
+#include "shader.h"
+#include "../utils/fileUtils.h"
+	Shader::Shader(const char* vertPath, const char* fragPath) : m_vertPath(vertPath), m_fragPath(fragPath) {
+		m_ShaderID = load(FileUtils::read_file(vertPath), FileUtils::read_file(fragPath));
 	}
-	void enable() {
+	void Shader::enable() {
 		glUseProgram(m_ShaderID);
+
 	}
-	void disable() {
+	void Shader::disable() {
 		glUseProgram(0);
 	}
-	void setBool(const std::string& name, bool value) const
+	void Shader::setBool(const std::string& name, bool value) const
 	{
 		glUniform1i(glGetUniformLocation(m_ShaderID, name.c_str()), (int)value);
 	}
-	void setInt(const std::string& name, int value) const
+	void Shader::setInt(const std::string& name, int value) const
 	{
 		glUniform1i(glGetUniformLocation(m_ShaderID, name.c_str()), value);
 	}
-	void setFloat(const std::string& name, float value) const
+	void Shader::setFloat(const std::string& name, float value) const
 	{
 		glUniform1f(glGetUniformLocation(m_ShaderID, name.c_str()), value);
 	}
-	void setMat4(const std::string& name, mat4 value) const
+	void Shader::setMat4(const std::string& name, mat4 value) const
 	{
 		glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, GL_FALSE, value_ptr(value));
 	}
-	void setVec3(const std::string& name, vec3 value) const
+	void Shader::setVec3(const std::string& name, vec3 value) const
 	{
 		glUniform3fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, value_ptr(value));
 	}
-	void setVec3(const std::string& name, float x, float y, float z) const
+	void Shader::setVec3(const std::string& name, float x, float y, float z) const
 	{
 		glUniform3f(glGetUniformLocation(m_ShaderID, name.c_str()), x, y, z);
 	}
-	void setVec2(const std::string& name, vec2 value) const
+	void Shader::setVec2(const std::string& name, vec2 value) const
 	{
 		glUniform2fv(glGetUniformLocation(m_ShaderID, name.c_str()), 1, value_ptr(value));
 	}
-private:
-	int m_ShaderID;
-	const char* m_vertPath;
-	const char* m_fragPath;
-	int load(std::string vertCode, std::string fragCode) {
+	int Shader::load(std::string vertCode, std::string fragCode) {
 		const char* vertSrc = vertCode.c_str();
 		const char* fragSrc = fragCode.c_str();
 		unsigned int vertex, fragment;
@@ -89,4 +88,3 @@ private:
 
 		return ID;
 	}
-};
