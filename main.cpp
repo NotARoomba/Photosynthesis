@@ -21,16 +21,16 @@ int main(int argc, char const *argv[]) {
 		if (app.isKeyPressed(GLFW_KEY_ESCAPE))
 			app.close();
 		if (app.isKeyPressed(GLFW_KEY_W))
-			t.move(vec3(1, 1, 0));
+			t.move(1.0f);
 			//camera.ProcessKeyboard(UP, app.deltaTime);
 		// if (app.isKeyPressed(GLFW_KEY_S))
 		// 	t.move(vec3(0, -2, 0));
 			//camera.ProcessKeyboard(DOWN, app.deltaTime);
 		if (app.isKeyPressed(GLFW_KEY_A))
-			t.move(vec3(0, 0, 0), vec3(0, 0, 1), 1);
+			t.move(0, vec3(0, 0, 1), -1);
 			//camera.ProcessKeyboard(LEFT, app.deltaTime);
 		if (app.isKeyPressed(GLFW_KEY_D))
-			t.move(vec3(0, 0, 0), vec3(0, 0, 1), -1);
+			t.move(0, vec3(0, 0, 1), 1);
 			//camera.ProcessKeyboard(RIGHT, app.deltaTime);
 	}
 	return 0;

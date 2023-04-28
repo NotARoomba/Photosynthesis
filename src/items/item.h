@@ -18,7 +18,7 @@ public:
 	float scale = 1;
 	vec3 pos;
 	vec3 velocity = vec3(0.0f);
-	float maxVel = 3.0f;
+	float maxVel = 1.0f;
 	unsigned int VAO, VBO;
 	vec3 getPosition() {return this->pos;};
 	void setPosition(glm::vec3 pos);
