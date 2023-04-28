@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/geometric.hpp>
 #include <iostream>
 #include <type_traits>
 #include <vector>
@@ -11,16 +12,21 @@ class Item {
 public:
 	vec3 color;
 	mat4 model;
+	float angle = 0.0f;
 	bool wireframe = false;
 	unsigned int texture = -1;
 	float scale = 1;
+	vec3 pos;
+	vec3 velocity = vec3(0.0f);
+	float maxVel = 3.0f;
 	unsigned int VAO, VBO;
-	std::vector<vec3> getPosition();
+	vec3 getPosition() {return this->pos;};
 	void setPosition(glm::vec3 pos);
 	void setPosition(glm::vec3 x, glm::vec3 y, glm::vec3 z);
 	glm::mat4 getModel();
 	void setModel(glm::mat4 model);
 	void draw();
+	Item* asItem();
 	void init(std::vector<float> arr, unsigned int* VBO, unsigned int* VAO) {
 		glGenVertexArrays(1, VAO);
 		glGenBuffers(1, VBO);
@@ -38,7 +44,7 @@ public:
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
 	}
+	void move(vec3 movement);
 private: 
-	vec3 x, y, z;
 	std::vector<vec3> points;
 };

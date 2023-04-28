@@ -1,5 +1,7 @@
+#include <glm/common.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <glm/trigonometric.hpp>
 #include <vector>
 #include "./item.h"
 #include "../utils/fileUtils.h"
@@ -7,18 +9,20 @@
 using namespace glm;
 
 
-class Polygon : Item {
+class Polygon : public Item {
 public:
-	Polygon(std::vector<vec3> points, vec3 color, float scale) {
+	Polygon(vec3 pos, std::vector<vec3> points, vec3 color, float scale) {
 		this->points = points;
+        this->pos = pos;
 		this->color = color;
         this->scale = scale;
 		this->model = mat4(1.0f);
         this->model = glm::scale(model, vec3(this->scale));
 		init(getArray(), &this->VBO, &this->VAO);
 	}
-	Polygon(std::vector<vec3> points, vec3 color, bool wireframe = false, float scale = 1) {
+	Polygon(vec3 pos, std::vector<vec3> points, vec3 color, bool wireframe = false, float scale = 1) {
 		this->points = points;
+        this->pos = pos;
 		this->color = color;
 		this->wireframe = wireframe;
         this->scale = scale;
@@ -26,19 +30,18 @@ public:
         this->model = glm::scale(model, vec3(this->scale));
 		init(getArray(), &this->VBO, &this->VAO);
 	}
-	Polygon(std::vector<vec3> points, std::string texPath, float scale = 1) {
+	Polygon(vec3 pos, std::vector<vec3> points, std::string texPath, float scale = 1) {
 		this->points = points;
+        this->pos = pos;
 		this->model = mat4(1.0f);
         this->model = glm::scale(model, vec3(this->scale));
 		this->texture = FileUtils::loadTexture(texPath.c_str());
 		init(getArray(), &this->VBO, &this->VAO);
 	}
-	std::vector<vec3> getPosition() { return points; }
-	void setPosition(std::vector<vec3> points) { this->points = points; }
 	std::vector<float> getArray() {
         std::vector<float> data = std::vector<float>();
         for (vec3 point : this->points) {
-            data.insert(data.end(), {point.x, point.y, point.z, color.x, color.y, color.z, 0.0f, 0.0f});
+            data.insert(data.end(), {point.x + this->pos.x, point.y + this->pos.y, point.z + this->pos.z, color.x, color.y, color.z, 0.0f, 0.0f});
         }
         return data;
 		// return std::vector<float>{
@@ -65,6 +68,21 @@ public:
 		glDrawArrays(GL_LINE_LOOP, 0, points.size());
 		glBindVertexArray(0);
 		glUseProgram(0);
+	}
+	void applyVelocity() {
+		this->pos += this->velocity;
+	}
+	void move(vec3 movement, vec3 rotation = vec3(0, 0, 0), float angle = 0.0f) {
+		this->pos += movement;
+		this->angle += angle;
+		this->velocity.x += movement.x * sin(glm::radians(this->angle));
+		this->velocity.y += movement.y * cos(glm::radians(this->angle));
+		this->velocity.z += movement.z * tan(glm::radians(this->angle));
+		this->velocity.x = abs(this->velocity.x)>this->maxVel?this->maxVel:this->velocity.x;
+		this->velocity.y = abs(this->velocity.y)>this->maxVel?this->maxVel:this->velocity.y;
+		this->velocity.z = abs(this->velocity.z)>this->maxVel?this->maxVel:this->velocity.z;
+		this->model = glm::rotate(this->model, glm::radians(angle), rotation);
+		this->model = glm::translate(this->model, velocity);
 	}
 private:
 	std::vector<vec3> points;

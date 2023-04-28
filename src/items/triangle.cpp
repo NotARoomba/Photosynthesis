@@ -6,7 +6,7 @@
 using namespace glm;
 
 
-class Triangle : Item {
+class Triangle : public Item {
 public:
 	Triangle(vec3 x, vec3 y, vec3 z, vec3 color) {
 		this->x = x;
@@ -53,7 +53,7 @@ public:
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture);
 		}
-		glPolygonMode(GL_FRONT_AND_BACK, this->wireframe?GL_LINE:GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		app->shader->enable();
 		glBindVertexArray(this->VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);

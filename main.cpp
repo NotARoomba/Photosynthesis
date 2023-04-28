@@ -1,29 +1,37 @@
 #include <iostream>
 #include "src/includes.h"
+#include "memory"
 
 int main(int argc, char const *argv[]) {
 	Photosynthesis app(800, 600, "Photosynthesis", vec3(0, 0, 0));
 	//Triangle t(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), "src/assets/container.jpg" /*vec3(255, 0, 0)*/);
 	//Triangle t(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), vec3(255, 0, 0), true);
-	Polygon t({{0, 0, 0}, {8, -30, 0}, {0, -20, 0}, {-8, -30, 0}, {0, 0, 0} }, vec3(255, 255, 255), false, 0.01);
-	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f));
+	Polygon t(vec3(0, 0, 0), {{0, 0, 0}, {8, -30, 0}, {0, -20, 0}, {-8, -30, 0}, {0, 0, 0} }, vec3(255, 255, 255), false, 0.01);
+	Triangle f(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), vec3(255, 0, 0), false);
+	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f), t.asItem());
 	app.setCamera(&camera);
 	while(!app.shouldClose()) {
 		app.clear();
 		app.update();
+		t.applyVelocity();
 		t.draw(&app);
+		f.draw(&app);
 		app.swap();
 
 		if (app.isKeyPressed(GLFW_KEY_ESCAPE))
 			app.close();
 		if (app.isKeyPressed(GLFW_KEY_W))
-			camera.ProcessKeyboard(UP, app.deltaTime);
-		if (app.isKeyPressed(GLFW_KEY_S))
-			camera.ProcessKeyboard(DOWN, app.deltaTime);
+			t.move(vec3(1, 1, 0));
+			//camera.ProcessKeyboard(UP, app.deltaTime);
+		// if (app.isKeyPressed(GLFW_KEY_S))
+		// 	t.move(vec3(0, -2, 0));
+			//camera.ProcessKeyboard(DOWN, app.deltaTime);
 		if (app.isKeyPressed(GLFW_KEY_A))
-			camera.ProcessKeyboard(LEFT, app.deltaTime);
+			t.move(vec3(0, 0, 0), vec3(0, 0, 1), 1);
+			//camera.ProcessKeyboard(LEFT, app.deltaTime);
 		if (app.isKeyPressed(GLFW_KEY_D))
-			camera.ProcessKeyboard(RIGHT, app.deltaTime);
+			t.move(vec3(0, 0, 0), vec3(0, 0, 1), -1);
+			//camera.ProcessKeyboard(RIGHT, app.deltaTime);
 	}
 	return 0;
 }
