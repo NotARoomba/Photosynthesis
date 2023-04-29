@@ -1,5 +1,6 @@
 #include <glm/common.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/quaternion_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/trigonometric.hpp>
 #include <vector>
@@ -71,6 +72,10 @@ public:
 	}
 	void applyVelocity() {
 		this->pos += this->velocity;
+	this->model = mat4(1.0f);
+    this->model = glm::rotate(this->model, radians(this->angle), vec3(0, 0, 1));
+	this->model = glm::scale(model, vec3(this->scale));
+    this->model =  glm::translate(this->model, this->pos);
 		std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << this->angle << std::endl;
 	}
 	void move(vec3 movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
@@ -87,15 +92,15 @@ public:
 		this->model = glm::translate(this->model, this->velocity);
 	}
 	void move(float movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
-		this->angle += m_angle;
+	this->angle += m_angle;
+	this->model = mat4(1.0f);
     this->velocity.x += movement * cos(radians(m_angle));
-    this->velocity.y += movement * sin(radians(m_angle));
+    this->velocity.y += movement * cos(radians(m_angle));
     this->velocity.x = abs(this->velocity.x) > this->maxVel ? this->maxVel : this->velocity.x;
     this->velocity.y = abs(this->velocity.y) > this->maxVel ? this->maxVel : this->velocity.y;
-    this->pos += this->velocity;
-
-    this->model = glm::rotate(this->model, radians(m_angle), rotation);
-    this->model =  glm::translate(this->model, this->velocity);
+	this->model = glm::scale(model, vec3(this->scale));
+    this->model = glm::rotate(this->model, radians(this->angle), rotation);
+    this->model =  glm::translate(this->model, this->pos);
 	}
 private:
 	std::vector<vec3> points;
