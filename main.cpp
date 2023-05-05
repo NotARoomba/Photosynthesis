@@ -28,10 +28,10 @@ int main(int argc, char const *argv[]) {
 		// 	t.move(vec3(0, -2, 0));
 			//camera.ProcessKeyboard(DOWN, app.deltaTime);
 		if (app.isKeyPressed(GLFW_KEY_A))
-			t.move(0, vec3(0, 0, 1), -1);
+			t.move(0.0f, vec3(0, 0, 1), -1);
 			//camera.ProcessKeyboard(LEFT, app.deltaTime);
 		if (app.isKeyPressed(GLFW_KEY_D))
-			t.move(0, vec3(0, 0, 1), 1);
+			t.move(0.0f, vec3(0, 0, 1), 1);
 			//camera.ProcessKeyboard(RIGHT, app.deltaTime);
 	}
 	return 0;
