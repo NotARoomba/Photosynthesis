@@ -25,6 +25,8 @@ public:
 	void setPosition(glm::vec3 x, glm::vec3 y, glm::vec3 z);
 	glm::mat4 getModel();
 	void setModel(glm::mat4 model);
+	void setAngle(float angle) { this->angle = angle;};
+	float getAngle() {return this->angle;};
 	void draw();
 	Item* asItem();
 	void init(std::vector<float> arr, unsigned int* VBO, unsigned int* VAO) {
@@ -45,6 +47,7 @@ public:
 		glEnableVertexAttribArray(2);
 	}
 	void move(vec3 movement);
+	void move(float movement);
 private: 
 	std::vector<vec3> points;
 };

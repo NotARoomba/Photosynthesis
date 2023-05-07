@@ -70,18 +70,18 @@ public:
 		glBindVertexArray(0);
 		glUseProgram(0);
 	}
-	void applyVelocity() {
-	this->model = mat4(1.0f);
-	this->model = glm::translate(this->model, vec3(0.0f));
-    this->pos += this->velocity;
-	this->model = glm::scale(this->model, vec3(this->scale));
-    this->model = glm::rotate(this->model, radians(angle), vec3(0, 0, 1));
-	this->model = glm::translate(this->model, this->pos);
+// 	void applyVelocity() {
+// 	this->model = mat4(1.0f);
+// 	this->model = glm::translate(this->model, vec3(0.0f));
+//     this->pos += this->velocity;
+// 	this->model = glm::scale(this->model, vec3(this->scale));
+//     this->model = glm::rotate(this->model, radians(angle), vec3(0, 0, 1));
+// 	this->model = glm::translate(this->model, this->pos);
 
-    // this->model = glm::translate(mat4(1.0f), this->pos) * glm::rotate(mat4(1.0f), radians(this->angle), vec3(0, 0, 1.0f));
-    // this->model = glm::scale(this->model, vec3(this->scale));
-    std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << this->angle << std::endl;
-}
+//     // this->model = glm::translate(mat4(1.0f), this->pos) * glm::rotate(mat4(1.0f), radians(this->angle), vec3(0, 0, 1.0f));
+//     // this->model = glm::scale(this->model, vec3(this->scale));
+//     std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << this->angle << std::endl;
+// }
 
 // void move(vec3 movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
 //     this->angle += m_angle;
@@ -97,21 +97,18 @@ public:
 // }
 
 void move(float movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
-	this->model = mat4(1.0f);
     this->angle += m_angle;
-	if (movement != 0.0f) {
-    float sinAngle = sin(glm::radians(this->angle));
-    float cosAngle = cos(glm::radians(this->angle)); 
-    this->velocity.x += movement * cosAngle - movement * sinAngle;;
-    this->velocity.y += movement * sinAngle + movement * cosAngle;;
-    this->velocity.x = abs(this->velocity.x) > this->maxVel ? this->maxVel  : this->velocity.x;
-    this->velocity.y = abs(this->velocity.y) > this->maxVel ? this->maxVel  : this->velocity.y;
+	std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << this->angle << std::endl;
+	if (movement != 0) { 
+    this->velocity.x += movement * (cosf(radians(this->angle)));
+    this->velocity.y += movement * (sinf(radians(this->angle)));
+    this->velocity.x = this->velocity.x > this->maxVel ? this->maxVel  : this->velocity.x < -this->maxVel? -this->maxVel : this->velocity.x;
+    this->velocity.y = this->velocity.y > this->maxVel ? this->maxVel  : this->velocity.y < -this->maxVel?-this->maxVel : this->velocity.y;
 	}
-	this->model = glm::translate(this->model, vec3(0.0f));
+	this->model = glm::rotate(this->model, radians(m_angle), rotation);
+	// this->model = glm::scale(this->model, vec3(this->scale));
+	this->model = glm::translate(this->model, this->velocity);
     this->pos += this->velocity;
-	this->model = glm::scale(this->model, vec3(this->scale));
-	this->model = glm::rotate(this->model, radians(this->angle), rotation);
-	this->model = glm::translate(this->model, this->pos);
 }
 private:
 	std::vector<vec3> points;

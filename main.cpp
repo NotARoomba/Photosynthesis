@@ -8,13 +8,14 @@ int main(int argc, char const *argv[]) {
 	//Triangle t(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), vec3(255, 0, 0), true);
 	Polygon t(vec3(0, 0, 0), {{0, 0, 0}, {8, -30, 0}, {0, -20, 0}, {-8, -30, 0}, {0, 0, 0} }, vec3(255, 255, 255), false, 0.01);
 	Triangle f(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), vec3(255, 0, 0), false);
-	//Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f), t.asItem());
-	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f), vec3(0.0f, 1.0f, 0.0f));
+	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f), t.asItem());
+	//Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f), vec3(0.0f, 1.0f, 0.0f));
+	t.setAngle(90);
 	app.setCamera(&camera);
 	while(!app.shouldClose()) {
 		app.clear();
 		app.update();
-		t.applyVelocity();
+		t.move(0);
 		t.draw(&app);
 		f.draw(&app);
 		app.swap();
@@ -22,7 +23,7 @@ int main(int argc, char const *argv[]) {
 		if (app.isKeyPressed(GLFW_KEY_ESCAPE))
 			app.close();
 		if (app.isKeyPressed(GLFW_KEY_W))
-			t.move(.01f);
+			t.move(.01000f);
 			//camera.ProcessKeyboard(UP, app.deltaTime);
 		// if (app.isKeyPressed(GLFW_KEY_S))
 		// 	t.move(vec3(0, -2, 0));
