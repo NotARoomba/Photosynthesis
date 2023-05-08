@@ -3,34 +3,33 @@
 #include "../utils/fileUtils.h"
 #include <glm/gtx/string_cast.hpp>
 #include <vector>
-using namespace glm;
 
 
 class Triangle : public Item {
 public:
-	Triangle(vec3 x, vec3 y, vec3 z, vec3 color) {
+	Triangle(glm::vec3 x, glm::vec3 y, glm::vec3 z, glm::vec3 color) {
 		this->x = x;
 		this->y = y;
 		this->z = z;
 		this->color = color;
-		this->model = mat4(1.0f);
+		this->model = glm::mat4(1.0f);
 		init(getArray(), &this->VBO, &this->VAO);
 	}
-	Triangle(vec3 x, vec3 y, vec3 z, vec3 color, bool wireframe) {
+	Triangle(glm::vec3 x, glm::vec3 y, glm::vec3 z, glm::vec3 color, bool wireframe) {
 		this->x = x;
 		this->y = y;
 		this->z = z;
 		this->color = color;
 		this->wireframe = wireframe;
-		this->model = mat4(1.0f);
+		this->model = glm::mat4(1.0f);
 		init(getArray(), &this->VBO, &this->VAO);
 	}
-	Triangle(vec3 x, vec3 y, vec3 z, std::string texPath) {
+	Triangle(glm::vec3 x, glm::vec3 y, glm::vec3 z, std::string texPath) {
 		this->x = x;
 		this->y = y;
 		this->z = z;
 		this->color = color;
-		this->model = mat4(1.0f);
+		this->model = glm::mat4(1.0f);
 		this->texture = FileUtils::loadTexture(texPath.c_str());
 		init(getArray(), &this->VBO, &this->VAO);
 	}
@@ -61,5 +60,5 @@ public:
 		glUseProgram(0);
 	}
 private:
-	vec3 x,y,z;
+	glm::vec3 x,y,z;
 };

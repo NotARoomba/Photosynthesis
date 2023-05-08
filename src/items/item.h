@@ -6,21 +6,20 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-using namespace glm;
 
 class Item {
 public:
-	vec3 color;
-	mat4 model;
+	glm::vec3 color;
+	glm::mat4 model;
 	float angle = 0.0f;
 	bool wireframe = false;
 	unsigned int texture = -1;
 	float scale = 1;
-	vec3 pos;
-	vec3 velocity = vec3(0.0f);
+	glm::vec3 pos;
+	glm::vec3 velocity = glm::vec3(0.0f);
 	float maxVel = 1.0f;
 	unsigned int VAO, VBO;
-	vec3 getPosition() {return this->pos;};
+	glm::vec3 getPosition() {return this->pos;};
 	void setPosition(glm::vec3 pos);
 	void setPosition(glm::vec3 x, glm::vec3 y, glm::vec3 z);
 	glm::mat4 getModel();
@@ -46,8 +45,8 @@ public:
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
 	}
-	void move(vec3 movement);
+	void move(glm::vec3 movement);
 	void move(float movement);
 private: 
-	std::vector<vec3> points;
+	std::vector<glm::vec3> points;
 };

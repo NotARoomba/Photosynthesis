@@ -35,7 +35,7 @@
         if (following == nullptr) {
             return glm::lookAt(Position, Position + Front, Up);
         } else {
-            return glm::lookAt(following->getPosition()*0.01f - vec3(0, 0, -6) , following->getPosition()*0.01f+Front, Up);
+            return glm::lookAt(following->getPosition()*0.01f - glm::vec3(0, 0, -6) , following->getPosition()*0.01f+Front, Up);
         }
     }
 

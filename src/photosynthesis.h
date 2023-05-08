@@ -28,8 +28,8 @@ public:
 	float lastFrame = 0.0f;
 	int width,height;
 	std::string name;
-	vec3 color;
-	Photosynthesis(int sx, int sy, std::string name, vec3 color);
+	glm::vec3 color;
+	Photosynthesis(int sx, int sy, std::string name, glm::vec3 color);
 	void update();
 	bool shouldClose();
 	void useShader();

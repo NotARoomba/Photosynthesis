@@ -16,7 +16,7 @@ float Photosynthesis::m_lastY;
 bool Photosynthesis::m_firstMouse;
 Camera *Photosynthesis::camera;
 
-Photosynthesis::Photosynthesis(int sx, int sy, std::string name, vec3 color) {
+Photosynthesis::Photosynthesis(int sx, int sy, std::string name, glm::vec3 color) {
 	this->width = sx;
 	this->height = sy;
 	this->name = name;

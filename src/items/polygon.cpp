@@ -7,41 +7,40 @@
 #include "./item.h"
 #include "../utils/fileUtils.h"
 #include "../photosynthesis.h"
-using namespace glm;
 
 
 class Polygon : public Item {
 public:
-	Polygon(vec3 pos, std::vector<vec3> points, vec3 color, float scale) {
+	Polygon(glm::vec3 pos, std::vector<glm::vec3> points, glm::vec3 color, float scale) {
 		this->points = points;
         this->pos = pos;
 		this->color = color;
         this->scale = scale;
-		this->model = mat4(1.0f);
-        this->model = glm::scale(model, vec3(this->scale));
+		this->model = glm::mat4(1.0f);
+        this->model = glm::scale(model, glm::vec3(this->scale));
 		init(getArray(), &this->VBO, &this->VAO);
 	}
-	Polygon(vec3 pos, std::vector<vec3> points, vec3 color, bool wireframe = false, float scale = 1) {
+	Polygon(glm::vec3 pos, std::vector<glm::vec3> points, glm::vec3 color, bool wireframe = false, float scale = 1) {
 		this->points = points;
         this->pos = pos;
 		this->color = color;
 		this->wireframe = wireframe;
         this->scale = scale;
-		this->model = mat4(1.0f);
-        this->model = glm::scale(model, vec3(this->scale));
+		this->model = glm::mat4(1.0f);
+        this->model = glm::scale(model, glm::vec3(this->scale));
 		init(getArray(), &this->VBO, &this->VAO);
 	}
-	Polygon(vec3 pos, std::vector<vec3> points, std::string texPath, float scale = 1) {
+	Polygon(glm::vec3 pos, std::vector<glm::vec3> points, std::string texPath, float scale = 1) {
 		this->points = points;
         this->pos = pos;
-		this->model = mat4(1.0f);
-        this->model = glm::scale(model, vec3(this->scale));
+		this->model = glm::mat4(1.0f);
+        this->model = glm::scale(model, glm::vec3(this->scale));
 		this->texture = FileUtils::loadTexture(texPath.c_str());
 		init(getArray(), &this->VBO, &this->VAO);
 	}
 	std::vector<float> getArray() {
         std::vector<float> data = std::vector<float>();
-        for (vec3 point : this->points) {
+        for (glm::vec3 point : this->points) {
             data.insert(data.end(), {point.x + this->pos.x, point.y + this->pos.y, point.z + this->pos.z, color.x, color.y, color.z, 0.0f, 0.0f});
         }
         return data;
@@ -72,18 +71,18 @@ public:
 	}
 // 	void applyVelocity() {
 // 	this->model = mat4(1.0f);
-// 	this->model = glm::translate(this->model, vec3(0.0f));
+// 	this->model = glm::translate(this->model, glm::vec3(0.0f));
 //     this->pos += this->velocity;
-// 	this->model = glm::scale(this->model, vec3(this->scale));
-//     this->model = glm::rotate(this->model, radians(angle), vec3(0, 0, 1));
+// 	this->model = glm::scale(this->model, glm::vec3(this->scale));
+//     this->model = glm::rotate(this->model, radians(angle), glm::vec3(0, 0, 1));
 // 	this->model = glm::translate(this->model, this->pos);
 
-//     // this->model = glm::translate(mat4(1.0f), this->pos) * glm::rotate(mat4(1.0f), radians(this->angle), vec3(0, 0, 1.0f));
-//     // this->model = glm::scale(this->model, vec3(this->scale));
+//     // this->model = glm::translate(mat4(1.0f), this->pos) * glm::rotate(mat4(1.0f), radians(this->angle), glm::vec3(0, 0, 1.0f));
+//     // this->model = glm::scale(this->model, glm::vec3(this->scale));
 //     std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << this->angle << std::endl;
 // }
 
-// void move(vec3 movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
+// void move(glm::vec3 movement, glm::vec3 rotation = glm::vec3(0, 0, 1), float m_angle = 0.0f) {
 //     this->angle += m_angle;
 //     float sinAngle = sin(glm::radians(this->angle));
 //     float cosAngle = cos(glm::radians(this->angle));
@@ -92,26 +91,26 @@ public:
 //     this->velocity.x = abs(this->velocity.x) > this->maxVel ? this->maxVel : this->velocity.x;
 //     this->velocity.y = abs(this->velocity.y) > this->maxVel ? this->maxVel : this->velocity.y;
 //     this->pos += this->velocity;
-//     this->model = glm::translate(mat4(1.0f), this->pos) * glm::rotate(mat4(1.0f), radians(this->angle), rotation) * glm::scale(mat4(1.0f), vec3(this->scale));
+//     this->model = glm::translate(mat4(1.0f), this->pos) * glm::rotate(mat4(1.0f), radians(this->angle), rotation) * glm::scale(mat4(1.0f), glm::vec3(this->scale));
 
 // }
 
-void move(float movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
+void move(float movement, glm::vec3 rotation = glm::vec3(0, 0, 1), float m_angle = 0.0f) {
     this->angle += m_angle;
 	this->model = glm::translate(this->model, -this->pos);
 	std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << this->angle << std::endl;
 	if (movement != 0) { 
-    this->velocity.x += movement * (cosf(radians(this->angle)));
-    this->velocity.y += movement * (sinf(radians(this->angle)));
+    this->velocity.x += movement * (cosf(glm::radians(this->angle)));
+    this->velocity.y += movement * (sinf(glm::radians(this->angle)));
     this->velocity.x = this->velocity.x > this->maxVel ? this->maxVel  : this->velocity.x < -this->maxVel? -this->maxVel : this->velocity.x;
     this->velocity.y = this->velocity.y > this->maxVel ? this->maxVel  : this->velocity.y < -this->maxVel?-this->maxVel : this->velocity.y;
 	}
     this->pos += this->velocity;
-	this->model = glm::rotate(this->model, radians(m_angle), rotation);
-	// // this->model = glm::scale(this->model, vec3(this->scale));
+	this->model = glm::rotate(this->model, glm::radians(m_angle), rotation);
+	// // this->model = glm::scale(this->model, glm::vec3(this->scale));
 	 this->model = glm::translate(this->model, this->pos);
 }
 private:
-	std::vector<vec3> points;
+	std::vector<glm::vec3> points;
 
 };
