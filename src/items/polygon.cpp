@@ -98,6 +98,7 @@ public:
 
 void move(float movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
     this->angle += m_angle;
+	this->model = glm::translate(this->model, -this->pos);
 	std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << this->angle << std::endl;
 	if (movement != 0) { 
     this->velocity.x += movement * (cosf(radians(this->angle)));
@@ -105,10 +106,10 @@ void move(float movement, vec3 rotation = vec3(0, 0, 1), float m_angle = 0.0f) {
     this->velocity.x = this->velocity.x > this->maxVel ? this->maxVel  : this->velocity.x < -this->maxVel? -this->maxVel : this->velocity.x;
     this->velocity.y = this->velocity.y > this->maxVel ? this->maxVel  : this->velocity.y < -this->maxVel?-this->maxVel : this->velocity.y;
 	}
-	this->model = glm::rotate(this->model, radians(m_angle), rotation);
-	// this->model = glm::scale(this->model, vec3(this->scale));
-	this->model = glm::translate(this->model, this->velocity);
     this->pos += this->velocity;
+	this->model = glm::rotate(this->model, radians(m_angle), rotation);
+	// // this->model = glm::scale(this->model, vec3(this->scale));
+	 this->model = glm::translate(this->model, this->pos);
 }
 private:
 	std::vector<vec3> points;
