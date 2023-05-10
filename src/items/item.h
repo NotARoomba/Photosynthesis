@@ -3,6 +3,7 @@
 #include <glm/detail/qualifier.hpp>
 #include <glm/ext/quaternion_transform.hpp>
 #include <glm/fwd.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/trigonometric.hpp>
 #include <vector>
@@ -19,8 +20,7 @@ class Item {
 public:
 	glm::vec3 color;
 	glm::mat4 model;
-	float angle = 0.0f;
-	float initialAngle = 0.0f;
+	glm::quat initialRotation, rotation;
 	bool wireframe = false;
 	unsigned int texture = -1;
 	float scale = 1;
@@ -33,11 +33,9 @@ public:
 	void setPosition(glm::vec3 x, glm::vec3 y, glm::vec3 z);
 	glm::mat4 getModel();
 	void setModel(glm::mat4 model);
-	void setAngle(float angle) { this->angle = angle;};
-	float getAngle() {return this->angle;};
 	void draw();
 	Item* asItem();
-	void init(std::vector<float> arr, unsigned int* VBO, unsigned int* VAO) {
+	inline void init(std::vector<float> arr, unsigned int* VBO, unsigned int* VAO) {
 		glGenVertexArrays(1, VAO);
 		glGenBuffers(1, VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, *VBO);
@@ -54,11 +52,34 @@ public:
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
 	}
-	glm::mat4 rotAroundPoint(float rad, const glm::vec3& point, const glm::vec3& axis) {
+	std::vector<glm::vec3> normalizeVectorArray(std::vector<glm::vec3>& vec) {
+		std::vector<glm::vec3> normalizedVec;
+
+		float totalMagnitude = 0.0f;
+		for (const glm::vec3& element : vec) {
+			totalMagnitude += glm::length(element);
+		}
+		this->scale = totalMagnitude;
+		if (totalMagnitude > 0.0f) {
+			for (const glm::vec3& element : vec) {
+				if (glm::length(element) > 0.0f) {
+					normalizedVec.push_back(element / totalMagnitude);
+				}
+				else {
+					normalizedVec.push_back(glm::vec3(0.0f));
+				}
+			}
+		}
+		else {
+			normalizedVec = vec;
+		}
+
+		return normalizedVec;
+	}
+	glm::mat4 rotAroundPoint(const glm::vec3& point, const glm::quat& rotation) {
 		glm::mat4 t1 = glm::translate(glm::mat4(1),-point);
-		glm::mat4 r = glm::rotate(glm::mat4(1),rad,axis);
 		glm::mat4 t2 = glm::translate(glm::mat4(1),point);
-		return t2 * r * t1;
+		return t2 * glm::mat4_cast(rotation) * t1;
 	}
 	void move(glm::vec3 movement);
 	void move(float movement);
