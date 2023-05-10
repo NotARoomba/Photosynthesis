@@ -1,4 +1,12 @@
 #pragma once
+#include <glm/common.hpp>
+#include <glm/detail/qualifier.hpp>
+#include <glm/ext/quaternion_transform.hpp>
+#include <glm/fwd.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <glm/trigonometric.hpp>
+#include <vector>
+#include <glm/ext/matrix_transform.hpp>
 #include <glm/geometric.hpp>
 #include <iostream>
 #include <type_traits>
@@ -12,12 +20,13 @@ public:
 	glm::vec3 color;
 	glm::mat4 model;
 	float angle = 0.0f;
+	float initialAngle = 0.0f;
 	bool wireframe = false;
 	unsigned int texture = -1;
 	float scale = 1;
 	glm::vec3 pos;
 	glm::vec3 velocity = glm::vec3(0.0f);
-	float maxVel = 1.0f;
+	float maxVel = 3.0f;
 	unsigned int VAO, VBO;
 	glm::vec3 getPosition() {return this->pos;};
 	void setPosition(glm::vec3 pos);
@@ -44,6 +53,12 @@ public:
 		// texture coord attribute
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
+	}
+	glm::mat4 rotAroundPoint(float rad, const glm::vec3& point, const glm::vec3& axis) {
+		glm::mat4 t1 = glm::translate(glm::mat4(1),-point);
+		glm::mat4 r = glm::rotate(glm::mat4(1),rad,axis);
+		glm::mat4 t2 = glm::translate(glm::mat4(1),point);
+		return t2 * r * t1;
 	}
 	void move(glm::vec3 movement);
 	void move(float movement);

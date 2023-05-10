@@ -22,9 +22,9 @@ public:
 	static float m_lastY;
 	static bool m_firstMouse;
 	static Camera *camera;
+	static float deltaTime;
 
 	Shader* shader;
-	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
 	int width,height;
 	std::string name;
@@ -53,4 +53,5 @@ private:
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 	static void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+	static float getDeltaTime();
 };

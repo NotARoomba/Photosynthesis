@@ -6,8 +6,9 @@ int main(int argc, char const *argv[]) {
 	Photosynthesis app(800, 600, "Photosynthesis", vec3(0, 0, 0));
 	//Triangle t(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), "src/assets/container.jpg" /*vec3(255, 0, 0)*/);
 	//Triangle t(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), vec3(255, 0, 0), true);
-	Polygon t(vec3(0, 0, 0), {{0, 0, 0}, {8, -30, 0}, {0, -20, 0}, {-8, -30, 0}, {0, 0, 0} }, vec3(255, 255, 255), false, 0.01);
-	Triangle f(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), vec3(255, 0, 0), false);
+	//Polygon t(vec3(0, 0, 0), {{0, 0, 0}, {8, -30, 0}, {0, -20, 0}, {-8, -30, 0}, {0, 0, 0} }, vec3(255, 255, 255), true, 1);
+	Polygon t(vec3(0, 0, 0), {{0, 0, 0}, {8, -30, 0}, {0, -20, 0}, {-8, -30, 0}, {0, 0, 0} }, "src/assets/container.jpg", 90, 1);
+	Triangle f(vec3(-1, -1, 0), vec3(1,-1, 0), vec3(0, 1, 0), vec3(255, 0, 0), true);
 	Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f), t.asItem());
 	//Camera camera = Camera(glm::vec3(0.0f, 0.0f, 6.0f), vec3(0.0f, 1.0f, 0.0f));
 	t.setAngle(90);

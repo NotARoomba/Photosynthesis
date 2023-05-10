@@ -15,6 +15,7 @@ float Photosynthesis::m_lastX;
 float Photosynthesis::m_lastY;
 bool Photosynthesis::m_firstMouse;
 Camera *Photosynthesis::camera;
+float Photosynthesis::deltaTime;
 
 Photosynthesis::Photosynthesis(int sx, int sy, std::string name, glm::vec3 color) {
 	this->width = sx;
