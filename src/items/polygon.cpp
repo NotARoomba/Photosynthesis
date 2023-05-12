@@ -100,7 +100,7 @@ public:
 	void move(float movement, glm::vec3 rotationAxis = glm::vec3(0, 0, 1), float rotationAngle = 0.0f) {
 		this->rotation = glm::normalize(this->rotation * glm::angleAxis(glm::radians(rotationAngle), rotationAxis));
 		this->model = glm::mat4(1.0f);
-		std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << to_string(degrees(glm::eulerAngles(this->initialRotation))) << std::endl;
+		//std::cout << to_string(this->velocity) << " " << to_string(this->pos) << " " << to_string(degrees(glm::eulerAngles(this->initialRotation))) << std::endl;
 		if (movement != 0) { 
 			this->velocity.x += movement * (cosf(glm::eulerAngles(this->rotation).z + glm::eulerAngles(this->initialRotation).z));
 			this->velocity.y += movement * (sinf(glm::eulerAngles(this->rotation).z + glm::eulerAngles(this->initialRotation).z));

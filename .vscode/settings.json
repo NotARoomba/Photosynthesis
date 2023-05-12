@@ -32,5 +32,10 @@
     "**/.*/**",
     "**/.vscode",
     "**/.vscode/**"
-  ]
+  ],
+  "clangd.fallbackFlags": [
+    "-I/usr/include",
+    "-I/usr/include/freetype2"
+  ],
+  "C_Cpp_Runner.useAddressSanitizer": false
 }
