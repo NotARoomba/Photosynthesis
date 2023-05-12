@@ -29,6 +29,7 @@ public:
 	int width,height;
 	std::string name;
 	glm::vec3 color;
+	int fps;
 	Photosynthesis(int sx, int sy, std::string name, glm::vec3 color);
 	void update();
 	bool shouldClose();

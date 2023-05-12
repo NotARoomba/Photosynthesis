@@ -1,6 +1,7 @@
 #include <glm/ext/quaternion_trigonometric.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <iostream>
+#include <string>
 #include "src/includes.h"
 #include "memory"
 #include "src/utils/textRenderer.h"
@@ -23,9 +24,8 @@ int main(int argc, char const *argv[]) {
 		t.move(0);
 		t.draw(&app);
 		f.draw(&app);
-		//textRenderer.renderText("Photosynthesis", 25, 25, 50, {255, 255, 255}, &app);
+		textRenderer.renderText("Photosynthesis Engine, FPS: " + std::to_string(app.fps),0.0f, app.getHeight()-20, 0.5, {255, 255, 255}, &app);
 		app.swap();
-
 		if (app.isKeyPressed(GLFW_KEY_ESCAPE))
 			app.close();
 		if (app.isKeyPressed(GLFW_KEY_W))

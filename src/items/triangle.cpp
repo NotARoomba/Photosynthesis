@@ -62,6 +62,7 @@ public:
 		} else {
 			app->shader->setBool("hasTexture", false);
 		}
+		glDisable(GL_BLEND);
 		glPolygonMode(GL_FRONT_AND_BACK, this->wireframe?GL_LINE:GL_FILL);
 		app->shader->enable();
 		glBindVertexArray(this->VAO);

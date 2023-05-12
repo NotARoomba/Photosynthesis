@@ -27,10 +27,14 @@ Photosynthesis::Photosynthesis(int sx, int sy, std::string name, glm::vec3 color
 	shader = new Shader("src/shaders/vertex.vert", "src/shaders/fragment.frag");
 }
 void Photosynthesis::update() {
-	float currentFrame = static_cast<float>(glfwGetTime());
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-	glfwPollEvents();    
+    static float lastFrame = 0.0f;
+    float currentFrame = static_cast<float>(glfwGetTime());
+    float deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+
+    this->fps = 1.0f / deltaTime; // Calculate frames per second
+
+    glfwPollEvents();
 }
 bool Photosynthesis::shouldClose() {return glfwWindowShouldClose(window);};
 void Photosynthesis::useShader() {
