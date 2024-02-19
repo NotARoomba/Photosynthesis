@@ -30,7 +30,7 @@ public:
 	std::string name;
 	glm::vec3 color;
 	int fps;
-	Photosynthesis(int sx, int sy, std::string name, glm::vec3 color);
+	Photosynthesis(int sx, int sy, std::string name, glm::vec3 color, const char* vertPath, const char* fragPath);
 	void update();
 	bool shouldClose();
 	void useShader();
@@ -42,6 +42,7 @@ public:
 	bool isMouseButtonPressed(unsigned int mouse);
 	void getMousePosition(double& x, double& y);
 	void setCamera(Camera * cam);
+	glm::vec3 viewToWorldCoordTransform(int x, int y);
 	void close();
 	~Photosynthesis();
 private:

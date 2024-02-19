@@ -15,6 +15,7 @@
         WorldUp = up;
         Yaw = yaw;
         Pitch = pitch;
+        following = nullptr;
         updateCameraVectors();
     }
 
@@ -35,7 +36,7 @@
         if (following == nullptr) {
             return glm::lookAt(Position, Position + Front, Up);
         } else {
-            return glm::lookAt(following->getPosition() - glm::vec3(0, 0, -6) , following->getPosition()+Front, Up);
+            return glm::lookAt(following->getPosition() - glm::vec3(0, 0, -6 * following->scale) , following->getPosition()+Front, Up);
         }
     }
 

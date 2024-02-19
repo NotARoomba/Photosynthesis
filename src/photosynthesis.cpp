@@ -1,3 +1,4 @@
+#include <glm/ext/matrix_float4x4.hpp>
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -17,7 +18,7 @@ bool Photosynthesis::m_firstMouse;
 Camera *Photosynthesis::camera;
 float Photosynthesis::deltaTime;
 
-Photosynthesis::Photosynthesis(int sx, int sy, std::string name, glm::vec3 color) {
+Photosynthesis::Photosynthesis(int sx, int sy, std::string name, glm::vec3 color, const char* vertPath, const char* fragPath) {
 	this->width = sx;
 	this->height = sy;
 	this->name = name;
@@ -64,6 +65,18 @@ void Photosynthesis::getMousePosition(double& x, double& y) {
 }
 void Photosynthesis::setCamera(Camera * cam) {
 	Photosynthesis::camera = cam;
+}
+glm::vec3 Photosynthesis::viewToWorldCoordTransform(int s_x, int s_y) {
+    // NORMALISED DEVICE SPACE
+    double x = 2.0 * s_x / this->width - 1;
+    double y = 2.0 * s_y / this->height - 1;
+    // HOMOGENEOUS SPACE
+    glm::vec4 screenPos = glm::vec4(x, -y, -1.0f, 1.0f);
+    // Projection/Eye Space
+    glm::mat4 ProjectView = glm::mat4(1.0f) * glm::mat4(1.0f);
+    glm::mat4 viewProjectionInverse = inverse(ProjectView);
+    glm::vec4 worldPos = viewProjectionInverse * screenPos;
+    return glm::vec3(worldPos);
 }
 void Photosynthesis::close() {
 	glfwSetWindowShouldClose(window, GL_TRUE);
