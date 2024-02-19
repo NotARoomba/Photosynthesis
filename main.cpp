@@ -99,8 +99,10 @@ int main() {
 			m_camera.ProcessKeyboard(RIGHT, window.deltaTime);
 		if (window.isKeyPressed(GLFW_KEY_SPACE))
 			m_camera.ProcessKeyboard(UP, window.deltaTime);
-		if (window.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+		if (window.isKeyPressed(GLFW_KEY_LEFT_CONTROL))
 			m_camera.ProcessKeyboard(DOWN, window.deltaTime);
+		if (window.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+			m_camera.ProcessKeyboard(SPRINT, window.deltaTime);
 
 	}
 	return 0;

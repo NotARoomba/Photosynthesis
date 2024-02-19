@@ -13,7 +13,8 @@ enum Camera_Movement {
     LEFT,
     RIGHT, 
     UP, 
-    DOWN
+    DOWN,
+    SPRINT
 };
 
 // Default camera values
@@ -41,6 +42,7 @@ public:
     float MovementSpeed;
     float MouseSensitivity;
     float Zoom;
+    bool Sprinting = false;
 
     // constructor with vectors
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
@@ -70,7 +72,7 @@ public:
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {
-        float velocity = MovementSpeed * deltaTime;
+        float velocity = (Sprinting ? MovementSpeed * 4  : MovementSpeed) * deltaTime;
         if (direction == FORWARD)
             Position += Front * velocity * glm::vec3(1.0f, 0.0f, 1.0f);
         if (direction == BACKWARD)
@@ -83,6 +85,10 @@ public:
             Position += glm::vec3(0, 1.0f, 0) * velocity;
         if (direction == DOWN)
             Position -= glm::vec3(0, 1.0f, 0) * velocity;
+        if (direction == SPRINT)
+            Sprinting = true;
+        else
+            Sprinting = false;
     }
 
     // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
